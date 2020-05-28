@@ -1,12 +1,14 @@
 package me.nurio.bungeekeeper.packets.system;
 
-import lombok.Getter;
-import lombok.SneakyThrows;
+import lombok.*;
 import me.nurio.bungeekeeper.packets.Packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class LicenceSystemPacket implements Packet {
 
     public static final byte PACKET_ID = 3;

@@ -6,9 +6,9 @@ import me.nurio.bungeekeeper.packets.Packet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class GoodbyeSystemPacket implements Packet {
 
     public static final byte PACKET_ID = 2;

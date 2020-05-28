@@ -6,15 +6,18 @@ import me.nurio.bungeekeeper.packets.Packet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class HandshakeSystemPacket implements Packet {
 
     public static final byte PACKET_ID = 1;
 
-    @Getter private String message;
-    @Getter private boolean accepted;
+    @Getter private int serverType;
+    @Getter private String license;
+    @Getter private String owner;
+    @Getter private String serverIp;
+    @Getter private int serverPort;
 
     public byte getId() {
         return PACKET_ID;
@@ -22,15 +25,21 @@ public class HandshakeSystemPacket implements Packet {
 
     @SneakyThrows
     public void read(DataInputStream inputStream) {
-        message = inputStream.readUTF();
-        accepted = inputStream.readBoolean();
+        serverType = inputStream.readInt();
+        license = inputStream.readUTF();
+        owner = inputStream.readUTF();
+        serverIp = inputStream.readUTF();
+        serverPort = inputStream.readInt();
     }
 
     @SneakyThrows
     public void write(DataOutputStream outputStream) {
         outputStream.writeByte(PACKET_ID);
-        outputStream.writeUTF(message);
-        outputStream.writeBoolean(accepted);
+        outputStream.writeInt(serverType);
+        outputStream.writeUTF(license);
+        outputStream.writeUTF(owner);
+        outputStream.writeUTF(serverIp);
+        outputStream.writeInt(serverPort);
     }
 
 }

@@ -6,8 +6,10 @@ import me.nurio.bungeekeeper.packets.Packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.net.InetSocketAddress;
+import java.util.UUID;
 
-@Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -17,6 +19,9 @@ public class ServerChangePacket implements Packet {
 
     private long eventId = IdentityUtil.timeBasedId();
 
+    @NonNull private String playerName;
+    @NonNull private UUID uniqueId;
+    @NonNull private InetSocketAddress address;
     @NonNull private String serverName;
 
     @Override
@@ -27,6 +32,13 @@ public class ServerChangePacket implements Packet {
     @Override
     @SneakyThrows
     public void read(DataInputStream inputStream) {
+        playerName = inputStream.readUTF();
+        uniqueId = UUID.fromString(inputStream.readUTF());
+
+        String inetAddress = inputStream.readUTF();
+        int inetPort = inputStream.readInt();
+        address = InetSocketAddress.createUnresolved(inetAddress, inetPort);
+
         serverName = inputStream.readUTF();
     }
 
@@ -34,6 +46,10 @@ public class ServerChangePacket implements Packet {
     @SneakyThrows
     public void write(DataOutputStream outputStream) {
         outputStream.writeByte(PACKET_ID);
+        outputStream.writeUTF(playerName);
+        outputStream.writeUTF(uniqueId.toString());
+        outputStream.writeUTF(address.getHostName());
+        outputStream.writeInt(address.getPort());
         outputStream.writeUTF(serverName);
     }
 

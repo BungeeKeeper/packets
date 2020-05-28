@@ -9,7 +9,7 @@ import java.io.DataOutputStream;
 import java.net.InetSocketAddress;
 import java.util.UUID;
 
-@Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class PostConnectionPacket implements Packet {
     private long eventId = IdentityUtil.timeBasedId();
 
     @NonNull private String username;
-    @NonNull private UUID uuid;
+    @NonNull private UUID uniqueId;
     @NonNull private InetSocketAddress address;
     @NonNull private int protocol;
 
@@ -34,7 +34,7 @@ public class PostConnectionPacket implements Packet {
     @SneakyThrows
     public void read(DataInputStream inputStream) {
         username = inputStream.readUTF();
-        uuid = UUID.fromString(inputStream.readUTF());
+        uniqueId = UUID.fromString(inputStream.readUTF());
 
         String inetAddress = inputStream.readUTF();
         int inetPort = inputStream.readInt();
@@ -49,7 +49,7 @@ public class PostConnectionPacket implements Packet {
         outputStream.writeByte(PACKET_ID);
 
         outputStream.writeUTF(username);
-        outputStream.writeUTF(uuid.toString());
+        outputStream.writeUTF(uniqueId.toString());
         outputStream.writeUTF(address.getHostName());
         outputStream.writeInt(address.getPort());
         outputStream.writeInt(protocol);

@@ -8,7 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.InetSocketAddress;
 
-@Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -22,6 +22,7 @@ public class HandshakePacket implements Packet {
     @NonNull private String domain;
     @NonNull private int port;
     @NonNull private int protocol;
+    @NonNull private int requestedProtocol;
 
     @Override
     public byte getId() {
@@ -38,6 +39,7 @@ public class HandshakePacket implements Packet {
         domain = inputStream.readUTF();
         port = inputStream.readInt();
         protocol = inputStream.readInt();
+        requestedProtocol = inputStream.readInt();
     }
 
     @Override
@@ -50,6 +52,7 @@ public class HandshakePacket implements Packet {
         outputStream.writeUTF(domain);
         outputStream.writeInt(port);
         outputStream.writeInt(protocol);
+        outputStream.writeInt(requestedProtocol);
     }
 
 }
