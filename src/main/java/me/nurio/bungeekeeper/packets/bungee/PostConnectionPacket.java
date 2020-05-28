@@ -17,12 +17,12 @@ public class PostConnectionPacket implements Packet {
 
     public static final byte PACKET_ID = 22;
 
-    private long eventId = IdentityUtil.timeBasedId();
+    @Getter private long eventId = IdentityUtil.timeBasedId();
 
-    @NonNull private String username;
-    @NonNull private UUID uniqueId;
-    @NonNull private InetSocketAddress address;
-    @NonNull private int protocol;
+    @Getter @NonNull private String username;
+    @Getter @NonNull private UUID uniqueId;
+    @Getter @NonNull private InetSocketAddress address;
+    @Getter @NonNull private int protocol;
 
 
     @Override

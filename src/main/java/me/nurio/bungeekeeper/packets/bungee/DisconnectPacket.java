@@ -17,11 +17,11 @@ public class DisconnectPacket implements Packet {
 
     public static final byte PACKET_ID = 24;
 
-    private long eventId = IdentityUtil.timeBasedId();
+    @Getter private long eventId = IdentityUtil.timeBasedId();
 
-    @NonNull private String playerName;
-    @NonNull private UUID uniqueId;
-    @NonNull private InetSocketAddress address;
+    @Getter @NonNull private String playerName;
+    @Getter @NonNull private UUID uniqueId;
+    @Getter @NonNull private InetSocketAddress address;
 
     @Override
     public byte getId() {

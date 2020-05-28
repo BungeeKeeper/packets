@@ -16,11 +16,11 @@ public class ConnectionPacket implements Packet {
 
     public static final byte PACKET_ID = 21;
 
-    private long eventId = IdentityUtil.timeBasedId();
+    @Getter private long eventId = IdentityUtil.timeBasedId();
 
-    @NonNull private String username;
-    @NonNull private InetSocketAddress address;
-    @NonNull private int protocol;
+    @Getter @NonNull private String username;
+    @Getter @NonNull private InetSocketAddress address;
+    @Getter @NonNull private int protocol;
 
     @Override
     public byte getId() {

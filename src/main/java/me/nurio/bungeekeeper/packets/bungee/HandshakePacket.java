@@ -16,13 +16,13 @@ public class HandshakePacket implements Packet {
 
     public static final byte PACKET_ID = 20;
 
-    private long eventId = IdentityUtil.timeBasedId();
+    @Getter private long eventId = IdentityUtil.timeBasedId();
 
-    @NonNull private InetSocketAddress address;
-    @NonNull private String domain;
-    @NonNull private int port;
-    @NonNull private int protocol;
-    @NonNull private int requestedProtocol;
+    @Getter @NonNull private InetSocketAddress address;
+    @Getter @NonNull private String domain;
+    @Getter @NonNull private int port;
+    @Getter @NonNull private int protocol;
+    @Getter @NonNull private int requestedProtocol;
 
     @Override
     public byte getId() {
