@@ -6,6 +6,7 @@ import me.nurio.bungeekeeper.packets.Packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 @ToString
@@ -32,9 +33,12 @@ public class HandshakePacket implements Packet {
     @Override
     @SneakyThrows
     public void read(DataInputStream inputStream) {
-        String inetAddress = inputStream.readUTF();
+        String ipAddress = inputStream.readUTF();
+        String hostName = inputStream.readUTF();
+        InetAddress inetAddress = InetAddress.getByAddress(hostName, InetAddress.getByName(ipAddress).getAddress());
+
         int inetPort = inputStream.readInt();
-        address = InetSocketAddress.createUnresolved(inetAddress, inetPort);
+        address = new InetSocketAddress(inetAddress, inetPort);
 
         domain = inputStream.readUTF();
         port = inputStream.readInt();
@@ -47,8 +51,10 @@ public class HandshakePacket implements Packet {
     public void write(DataOutputStream outputStream) {
         outputStream.writeByte(PACKET_ID);
 
-        outputStream.writeUTF(address.getHostName());
+        outputStream.writeUTF(address.getAddress().getHostAddress());
+        outputStream.writeUTF(address.getAddress().getHostName());
         outputStream.writeInt(address.getPort());
+
         outputStream.writeUTF(domain);
         outputStream.writeInt(port);
         outputStream.writeInt(protocol);

@@ -6,6 +6,7 @@ import me.nurio.bungeekeeper.packets.Packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 @ToString
@@ -32,9 +33,12 @@ public class ConnectionPacket implements Packet {
     public void read(DataInputStream inputStream) {
         username = inputStream.readUTF();
 
-        String inetAddress = inputStream.readUTF();
-        int port = inputStream.readInt();
-        address = InetSocketAddress.createUnresolved(inetAddress, port);
+        String ipAddress = inputStream.readUTF();
+        String hostName = inputStream.readUTF();
+        InetAddress inetAddress = InetAddress.getByAddress(hostName, InetAddress.getByName(ipAddress).getAddress());
+
+        int inetPort = inputStream.readInt();
+        address = new InetSocketAddress(inetAddress, inetPort);
 
         protocol = inputStream.readInt();
     }
@@ -44,8 +48,11 @@ public class ConnectionPacket implements Packet {
     public void write(DataOutputStream outputStream) {
         outputStream.writeByte(PACKET_ID);
         outputStream.writeUTF(username);
-        outputStream.writeUTF(address.getHostName());
+
+        outputStream.writeUTF(address.getAddress().getHostAddress());
+        outputStream.writeUTF(address.getAddress().getHostName());
         outputStream.writeInt(address.getPort());
+
         outputStream.writeInt(protocol);
     }
 

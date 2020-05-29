@@ -6,6 +6,7 @@ import me.nurio.bungeekeeper.packets.Packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.UUID;
 
@@ -34,9 +35,12 @@ public class DisconnectPacket implements Packet {
         playerName = inputStream.readUTF();
         uniqueId = UUID.fromString(inputStream.readUTF());
 
-        String inetAddress = inputStream.readUTF();
+        String ipAddress = inputStream.readUTF();
+        String hostName = inputStream.readUTF();
+        InetAddress inetAddress = InetAddress.getByAddress(hostName, InetAddress.getByName(ipAddress).getAddress());
+
         int inetPort = inputStream.readInt();
-        address = InetSocketAddress.createUnresolved(inetAddress, inetPort);
+        address = new InetSocketAddress(inetAddress, inetPort);
     }
 
     @Override
@@ -45,7 +49,9 @@ public class DisconnectPacket implements Packet {
         outputStream.writeByte(PACKET_ID);
         outputStream.writeUTF(playerName);
         outputStream.writeUTF(uniqueId.toString());
-        outputStream.writeUTF(address.getHostName());
+
+        outputStream.writeUTF(address.getAddress().getHostAddress());
+        outputStream.writeUTF(address.getAddress().getHostName());
         outputStream.writeInt(address.getPort());
     }
 
