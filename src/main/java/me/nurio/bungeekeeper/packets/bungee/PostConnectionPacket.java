@@ -25,7 +25,6 @@ public class PostConnectionPacket implements Packet {
     @Getter @NonNull private InetSocketAddress address;
     @Getter @NonNull private int protocol;
 
-
     @Override
     public byte getId() {
         return PACKET_ID;
