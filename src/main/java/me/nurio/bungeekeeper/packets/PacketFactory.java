@@ -20,6 +20,7 @@ public class PacketFactory {
         if (packetId == 23) return new ServerChangePacket();
         if (packetId == 24) return new DisconnectPacket();
 
+        if (packetId == 30) return new ConnectionResponsePacket();
         return null;
     }
 
