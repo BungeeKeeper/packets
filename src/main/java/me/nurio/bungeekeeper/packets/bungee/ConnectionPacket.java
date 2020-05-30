@@ -31,6 +31,7 @@ public class ConnectionPacket implements Packet {
     @Override
     @SneakyThrows
     public void read(DataInputStream inputStream) {
+        eventId = inputStream.readLong();
         username = inputStream.readUTF();
 
         String ipAddress = inputStream.readUTF();
@@ -47,6 +48,8 @@ public class ConnectionPacket implements Packet {
     @SneakyThrows
     public void write(DataOutputStream outputStream) {
         outputStream.writeByte(PACKET_ID);
+
+        outputStream.writeLong(eventId);
         outputStream.writeUTF(username);
 
         outputStream.writeUTF(address.getAddress().getHostAddress());

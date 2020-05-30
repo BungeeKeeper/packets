@@ -33,6 +33,8 @@ public class HandshakePacket implements Packet {
     @Override
     @SneakyThrows
     public void read(DataInputStream inputStream) {
+        eventId = inputStream.readLong();
+
         String ipAddress = inputStream.readUTF();
         String hostName = inputStream.readUTF();
         InetAddress inetAddress = InetAddress.getByAddress(hostName, InetAddress.getByName(ipAddress).getAddress());
@@ -50,6 +52,8 @@ public class HandshakePacket implements Packet {
     @SneakyThrows
     public void write(DataOutputStream outputStream) {
         outputStream.writeByte(PACKET_ID);
+
+        outputStream.writeLong(eventId);
 
         outputStream.writeUTF(address.getAddress().getHostAddress());
         outputStream.writeUTF(address.getAddress().getHostName());

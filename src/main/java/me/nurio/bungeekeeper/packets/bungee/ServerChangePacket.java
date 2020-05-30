@@ -33,6 +33,7 @@ public class ServerChangePacket implements Packet {
     @Override
     @SneakyThrows
     public void read(DataInputStream inputStream) {
+        eventId = inputStream.readLong();
         playerName = inputStream.readUTF();
         uniqueId = UUID.fromString(inputStream.readUTF());
 
@@ -50,6 +51,8 @@ public class ServerChangePacket implements Packet {
     @SneakyThrows
     public void write(DataOutputStream outputStream) {
         outputStream.writeByte(PACKET_ID);
+
+        outputStream.writeLong(eventId);
         outputStream.writeUTF(playerName);
         outputStream.writeUTF(uniqueId.toString());
 
