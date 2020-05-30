@@ -3,11 +3,10 @@ package me.nurio.bungeekeeper.packets.bungee;
 import lombok.*;
 import me.nurio.bungeekeeper.packets.IdentityUtil;
 import me.nurio.bungeekeeper.packets.Packet;
+import me.nurio.bungeekeeper.packets.entities.RemoteAddress;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 
 @ToString
 @NoArgsConstructor
@@ -20,7 +19,7 @@ public class ConnectionPacket implements Packet {
     @Getter private long eventId = IdentityUtil.timeBasedId();
 
     @Getter @NonNull private String username;
-    @Getter @NonNull private InetSocketAddress address;
+    @Getter @NonNull private RemoteAddress address;
     @Getter @NonNull private int protocol;
 
     @Override
@@ -36,10 +35,8 @@ public class ConnectionPacket implements Packet {
 
         String ipAddress = inputStream.readUTF();
         String hostName = inputStream.readUTF();
-        InetAddress inetAddress = InetAddress.getByAddress(hostName, InetAddress.getByName(ipAddress).getAddress());
-
         int inetPort = inputStream.readInt();
-        address = new InetSocketAddress(inetAddress, inetPort);
+        address = new RemoteAddress(ipAddress, hostName, inetPort);
 
         protocol = inputStream.readInt();
     }
@@ -52,8 +49,8 @@ public class ConnectionPacket implements Packet {
         outputStream.writeLong(eventId);
         outputStream.writeUTF(username);
 
-        outputStream.writeUTF(address.getAddress().getHostAddress());
-        outputStream.writeUTF(address.getAddress().getHostName());
+        outputStream.writeUTF(address.getIpAddress());
+        outputStream.writeUTF(address.getHostName());
         outputStream.writeInt(address.getPort());
 
         outputStream.writeInt(protocol);

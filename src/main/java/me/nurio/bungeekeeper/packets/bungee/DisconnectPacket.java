@@ -3,11 +3,10 @@ package me.nurio.bungeekeeper.packets.bungee;
 import lombok.*;
 import me.nurio.bungeekeeper.packets.IdentityUtil;
 import me.nurio.bungeekeeper.packets.Packet;
+import me.nurio.bungeekeeper.packets.entities.RemoteAddress;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.util.UUID;
 
 @ToString
@@ -22,7 +21,7 @@ public class DisconnectPacket implements Packet {
 
     @Getter @NonNull private String playerName;
     @Getter @NonNull private UUID uniqueId;
-    @Getter @NonNull private InetSocketAddress address;
+    @Getter @NonNull private RemoteAddress address;
 
     @Override
     public byte getId() {
@@ -39,10 +38,8 @@ public class DisconnectPacket implements Packet {
 
         String ipAddress = inputStream.readUTF();
         String hostName = inputStream.readUTF();
-        InetAddress inetAddress = InetAddress.getByAddress(hostName, InetAddress.getByName(ipAddress).getAddress());
-
         int inetPort = inputStream.readInt();
-        address = new InetSocketAddress(inetAddress, inetPort);
+        address = new RemoteAddress(ipAddress, hostName, inetPort);
     }
 
     @Override
@@ -54,9 +51,10 @@ public class DisconnectPacket implements Packet {
         outputStream.writeUTF(playerName);
         outputStream.writeUTF(uniqueId.toString());
 
-        outputStream.writeUTF(address.getAddress().getHostAddress());
-        outputStream.writeUTF(address.getAddress().getHostName());
+        outputStream.writeUTF(address.getIpAddress());
+        outputStream.writeUTF(address.getHostName());
         outputStream.writeInt(address.getPort());
+
     }
 
 }

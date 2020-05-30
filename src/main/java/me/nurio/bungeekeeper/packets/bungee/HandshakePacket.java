@@ -3,11 +3,10 @@ package me.nurio.bungeekeeper.packets.bungee;
 import lombok.*;
 import me.nurio.bungeekeeper.packets.IdentityUtil;
 import me.nurio.bungeekeeper.packets.Packet;
+import me.nurio.bungeekeeper.packets.entities.RemoteAddress;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 
 @ToString
 @NoArgsConstructor
@@ -19,7 +18,7 @@ public class HandshakePacket implements Packet {
 
     @Getter private long eventId = IdentityUtil.timeBasedId();
 
-    @Getter @NonNull private InetSocketAddress address;
+    @Getter @NonNull private RemoteAddress address;
     @Getter @NonNull private String domain;
     @Getter @NonNull private int port;
     @Getter @NonNull private int protocol;
@@ -37,10 +36,8 @@ public class HandshakePacket implements Packet {
 
         String ipAddress = inputStream.readUTF();
         String hostName = inputStream.readUTF();
-        InetAddress inetAddress = InetAddress.getByAddress(hostName, InetAddress.getByName(ipAddress).getAddress());
-
         int inetPort = inputStream.readInt();
-        address = new InetSocketAddress(inetAddress, inetPort);
+        address = new RemoteAddress(ipAddress, hostName, inetPort);
 
         domain = inputStream.readUTF();
         port = inputStream.readInt();
@@ -55,8 +52,8 @@ public class HandshakePacket implements Packet {
 
         outputStream.writeLong(eventId);
 
-        outputStream.writeUTF(address.getAddress().getHostAddress());
-        outputStream.writeUTF(address.getAddress().getHostName());
+        outputStream.writeUTF(address.getIpAddress());
+        outputStream.writeUTF(address.getHostName());
         outputStream.writeInt(address.getPort());
 
         outputStream.writeUTF(domain);
