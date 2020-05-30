@@ -62,6 +62,7 @@ public class ConnectionResponsePacket implements Packet {
         outputStream.writeBoolean(allowed);
         outputStream.writeInt(reasonId);
         outputStream.writeUTF(reason);
+        outputStream.flush();
     }
 
 }

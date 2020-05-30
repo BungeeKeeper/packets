@@ -40,6 +40,7 @@ public class HandshakeSystemPacket implements Packet {
         outputStream.writeUTF(owner);
         outputStream.writeUTF(serverIp);
         outputStream.writeInt(serverPort);
+        outputStream.flush();
     }
 
 }

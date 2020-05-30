@@ -58,6 +58,7 @@ public class ServerChangePacket implements Packet {
         outputStream.writeInt(address.getPort());
 
         outputStream.writeUTF(serverName);
+        outputStream.flush();
     }
 
 }

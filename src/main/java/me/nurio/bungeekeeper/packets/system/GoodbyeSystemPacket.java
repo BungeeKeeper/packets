@@ -28,6 +28,7 @@ public class GoodbyeSystemPacket implements Packet {
     public void write(DataOutputStream outputStream) {
         outputStream.writeByte(PACKET_ID);
         outputStream.writeByte(reason);
+        outputStream.flush();
     }
 
 }

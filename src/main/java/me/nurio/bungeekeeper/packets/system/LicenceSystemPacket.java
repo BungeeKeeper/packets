@@ -40,6 +40,7 @@ public class LicenceSystemPacket implements Packet {
         outputStream.writeUTF(message);
         outputStream.writeUTF(licence);
         outputStream.writeLong(expiration);
+        outputStream.flush();
     }
 
 }

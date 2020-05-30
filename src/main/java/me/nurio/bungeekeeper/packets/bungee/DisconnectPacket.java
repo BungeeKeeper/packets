@@ -17,11 +17,18 @@ public class DisconnectPacket implements Packet {
 
     public static final byte PACKET_ID = 24;
 
-    @Getter private long eventId = IdentityUtil.timeBasedId();
+    @Getter
+    private long eventId = IdentityUtil.timeBasedId();
 
-    @Getter @NonNull private String playerName;
-    @Getter @NonNull private UUID uniqueId;
-    @Getter @NonNull private RemoteAddress address;
+    @Getter
+    @NonNull
+    private String playerName;
+    @Getter
+    @NonNull
+    private UUID uniqueId;
+    @Getter
+    @NonNull
+    private RemoteAddress address;
 
     @Override
     public byte getId() {
@@ -54,7 +61,7 @@ public class DisconnectPacket implements Packet {
         outputStream.writeUTF(address.getIpAddress());
         outputStream.writeUTF(address.getHostName());
         outputStream.writeInt(address.getPort());
-
+        outputStream.flush();
     }
 
 }

@@ -54,6 +54,7 @@ public class ConnectionPacket implements Packet {
         outputStream.writeInt(address.getPort());
 
         outputStream.writeInt(protocol);
+        outputStream.flush();
     }
 
 }

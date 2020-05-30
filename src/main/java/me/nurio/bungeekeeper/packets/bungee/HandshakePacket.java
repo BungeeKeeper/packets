@@ -60,6 +60,7 @@ public class HandshakePacket implements Packet {
         outputStream.writeInt(port);
         outputStream.writeInt(protocol);
         outputStream.writeInt(requestedProtocol);
+        outputStream.flush();
     }
 
 }
