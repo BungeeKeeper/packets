@@ -2,7 +2,6 @@ package me.nurio.bungeekeeper.packets.bungee;
 
 import lombok.*;
 import me.nurio.bungeekeeper.packets.Packet;
-import me.nurio.bungeekeeper.packets.entities.RemoteAddress;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -20,7 +19,7 @@ public class ConnectionResponsePacket implements Packet {
 
     @Getter @NonNull private String playerName;
     @Getter @NonNull private UUID uniqueId;
-    @Getter @NonNull private RemoteAddress address;
+    @Getter @NonNull private String address;
 
     @Getter @NonNull private boolean allowed;
     @Getter @NonNull private int reasonId;
@@ -37,11 +36,7 @@ public class ConnectionResponsePacket implements Packet {
         eventId = inputStream.readLong();
         playerName = inputStream.readUTF();
         uniqueId = UUID.fromString(inputStream.readUTF());
-
-        String ipAddress = inputStream.readUTF();
-        String hostName = inputStream.readUTF();
-        address = new RemoteAddress(ipAddress, hostName);
-
+        address = inputStream.readUTF();
         allowed = inputStream.readBoolean();
         reasonId = inputStream.readInt();
         reason = inputStream.readUTF();
@@ -55,10 +50,7 @@ public class ConnectionResponsePacket implements Packet {
         outputStream.writeLong(eventId);
         outputStream.writeUTF(playerName);
         outputStream.writeUTF(uniqueId.toString());
-
-        outputStream.writeUTF(address.getIpAddress());
-        outputStream.writeUTF(address.getHostName());
-
+        outputStream.writeUTF(address);
         outputStream.writeBoolean(allowed);
         outputStream.writeInt(reasonId);
         outputStream.writeUTF(reason);

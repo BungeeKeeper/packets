@@ -3,7 +3,6 @@ package me.nurio.bungeekeeper.packets.bungee;
 import lombok.*;
 import me.nurio.bungeekeeper.packets.IdentityUtil;
 import me.nurio.bungeekeeper.packets.Packet;
-import me.nurio.bungeekeeper.packets.entities.RemoteAddress;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -21,7 +20,7 @@ public class PostConnectionPacket implements Packet {
 
     @Getter @NonNull private String username;
     @Getter @NonNull private UUID uniqueId;
-    @Getter @NonNull private RemoteAddress address;
+    @Getter @NonNull private String address;
     @Getter @NonNull private int protocol;
 
     @Override
@@ -35,12 +34,7 @@ public class PostConnectionPacket implements Packet {
         eventId = inputStream.readLong();
         username = inputStream.readUTF();
         uniqueId = UUID.fromString(inputStream.readUTF());
-
-        String ipAddress = inputStream.readUTF();
-        String hostName = inputStream.readUTF();
-        int inetPort = inputStream.readInt();
-        address = new RemoteAddress(ipAddress, hostName, inetPort);
-
+        address = inputStream.readUTF();
         protocol = inputStream.readInt();
     }
 
@@ -52,11 +46,7 @@ public class PostConnectionPacket implements Packet {
         outputStream.writeLong(eventId);
         outputStream.writeUTF(username);
         outputStream.writeUTF(uniqueId.toString());
-
-        outputStream.writeUTF(address.getIpAddress());
-        outputStream.writeUTF(address.getHostName());
-        outputStream.writeInt(address.getPort());
-
+        outputStream.writeUTF(address);
         outputStream.writeInt(protocol);
         outputStream.flush();
     }

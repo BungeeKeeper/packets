@@ -3,7 +3,6 @@ package me.nurio.bungeekeeper.packets.bungee;
 import lombok.*;
 import me.nurio.bungeekeeper.packets.IdentityUtil;
 import me.nurio.bungeekeeper.packets.Packet;
-import me.nurio.bungeekeeper.packets.entities.RemoteAddress;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -20,15 +19,9 @@ public class DisconnectPacket implements Packet {
     @Getter
     private long eventId = IdentityUtil.timeBasedId();
 
-    @Getter
-    @NonNull
-    private String playerName;
-    @Getter
-    @NonNull
-    private UUID uniqueId;
-    @Getter
-    @NonNull
-    private RemoteAddress address;
+    @Getter @NonNull private String playerName;
+    @Getter @NonNull private UUID uniqueId;
+    @Getter @NonNull private String address;
 
     @Override
     public byte getId() {
@@ -42,11 +35,7 @@ public class DisconnectPacket implements Packet {
 
         playerName = inputStream.readUTF();
         uniqueId = UUID.fromString(inputStream.readUTF());
-
-        String ipAddress = inputStream.readUTF();
-        String hostName = inputStream.readUTF();
-        int inetPort = inputStream.readInt();
-        address = new RemoteAddress(ipAddress, hostName, inetPort);
+        address = inputStream.readUTF();
     }
 
     @Override
@@ -57,10 +46,7 @@ public class DisconnectPacket implements Packet {
         outputStream.writeLong(eventId);
         outputStream.writeUTF(playerName);
         outputStream.writeUTF(uniqueId.toString());
-
-        outputStream.writeUTF(address.getIpAddress());
-        outputStream.writeUTF(address.getHostName());
-        outputStream.writeInt(address.getPort());
+        outputStream.writeUTF(address);
         outputStream.flush();
     }
 
