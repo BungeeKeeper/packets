@@ -15,7 +15,8 @@ public class PacketFactory {
         if (packetId == 3) return new LicenceSystemPacket();
 
         if (packetId == 20) return new HandshakePacket();
-        if (packetId == 21) return new ConnectionPacket();
+        if (packetId == 21) return new PreConnectionPacket();
+        if (packetId == 25) return new ConnectionPacket();
         if (packetId == 22) return new PostConnectionPacket();
         if (packetId == 23) return new ServerChangePacket();
         if (packetId == 24) return new DisconnectPacket();

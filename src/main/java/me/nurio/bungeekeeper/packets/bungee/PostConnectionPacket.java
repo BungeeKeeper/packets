@@ -22,6 +22,7 @@ public class PostConnectionPacket implements Packet {
     @Getter @NonNull private UUID uniqueId;
     @Getter @NonNull private String address;
     @Getter @NonNull private int protocol;
+    @Getter @NonNull private boolean premium;
 
     @Override
     public byte getId() {
@@ -36,6 +37,7 @@ public class PostConnectionPacket implements Packet {
         uniqueId = UUID.fromString(inputStream.readUTF());
         address = inputStream.readUTF();
         protocol = inputStream.readInt();
+        premium = inputStream.readBoolean();
     }
 
     @Override
@@ -48,6 +50,7 @@ public class PostConnectionPacket implements Packet {
         outputStream.writeUTF(uniqueId.toString());
         outputStream.writeUTF(address);
         outputStream.writeInt(protocol);
+        outputStream.writeBoolean(premium);
         outputStream.flush();
     }
 
